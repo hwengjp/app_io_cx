@@ -1,0 +1,58 @@
+/* Copyright (C) 2024 Mono Wireless Inc. All Rights Reserved.
+ * Released under MW-SLA-*J,*E (MONO WIRELESS SOFTWARE LICENSE
+ * AGREEMENT).
+ *
+ * このファイルは設定値のテンプレートです。
+ * 実際の設定値は config_private.h に定義してください。
+ * config_private.h は Git にチェックインされません。
+ */
+
+#ifndef CONFIG_PRIVATE_H_INCLUDED
+#define CONFIG_PRIVATE_H_INCLUDED
+
+/****************************************************************************/
+/***        EI1, EI2 ピンによるチャネル設定の割り当て                    ***/
+/****************************************************************************/
+
+/* EI1, EI2 ピンの組み合わせによるチャネル設定
+ * 設定値 0: デフォルト/フラッシュ値
+ * 設定値 1: CHANNEL_1 を使用
+ * 設定値 2: CHANNEL_2 を使用
+ * 設定値 3: CHANNEL_3 を使用
+ */
+#define CHANNEL_DEFAULT  16  //!< デフォルトチャネル（設定値0で使用）
+#define CHANNEL_1        12  //!< EI1=G, EI2=O で使用されるチャネル（設定値1）
+#define CHANNEL_2        21  //!< EI1=O, EI2=G で使用されるチャネル（設定値2）
+#define CHANNEL_3        25  //!< EI1=G, EI2=G で使用されるチャネル（設定値3）
+
+/* チャネルマスク（ビットマスク形式） */
+#define CHMASK           ((1UL << CHANNEL_DEFAULT))  //!< デフォルトチャネルマスク
+#define CHMASK_1         ((1UL << CHANNEL_1))         //!< チャネル1のマスク
+#define CHMASK_2         ((1UL << CHANNEL_2))         //!< チャネル2のマスク
+#define CHMASK_3         ((1UL << CHANNEL_3))         //!< チャネル3のマスク
+
+/****************************************************************************/
+/***        デフォルト設定値                                            ***/
+/****************************************************************************/
+
+/* アプリケーションID（32bit） */
+#define CONFIG_DEFAULT_APPID           0x67726301UL  //!< デフォルトのアプリケーションID
+
+/* 論理デバイスID */
+#define CONFIG_DEFAULT_LOGICALID       1             //!< デフォルトの論理デバイスID
+
+/* チャネル設定 */
+#define CONFIG_DEFAULT_CHANNEL         18            //!< デフォルトのチャネル（11-26）
+#define CONFIG_DEFAULT_CHANNELS_3      ((1UL << 18) >> 11)  //!< デフォルトのチャネル（複数可）
+
+/* 送信出力と再送回数（XY形式: X=再送回数, Y=出力レベル） */
+#define CONFIG_DEFAULT_POWER_N_RETRY   0x93          //!< デフォルト: 再送9回=最大, 出力レベル3=最大
+
+/* UARTボーレート（実際のボーレートを100で割った値） */
+#define CONFIG_DEFAULT_UARTBAUD        1152         //!< デフォルト: 115200 bps
+
+/* オプションビット（32bit） */
+#define CONFIG_DEFAULT_OPTBITS         0x420000UL    //!< デフォルト: DIO出力を反転 + IO状態のUART出力抑制
+
+#endif  /* CONFIG_PRIVATE_H_INCLUDED */
+

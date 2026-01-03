@@ -15,6 +15,7 @@
 #include "twesettings_validator.h"
 #include "tweinputstring.h"
 #include "tweutils.h"
+#include "config_private.h"
 
 /*!
  * 共通定義
@@ -22,7 +23,7 @@
  */
 const TWESTG_tsElement TWESTG_DEFSETS_BASE[] = {
 	{ E_TWESTG_DEFSETS_APPID,  // アプリケーションID
-		{ TWESTG_DATATYPE_UINT32, sizeof(uint32), 0, 0, {.u32 = 0x67726301 }}, // 32bit (デフォルトのIDは配列決め打ちなので、ボード定義でオーバライドが必要)
+		{ TWESTG_DATATYPE_UINT32, sizeof(uint32), 0, 0, {.u32 = CONFIG_DEFAULT_APPID }}, // 32bit (config_private.h から取得)
 		{ "AID",
 		  "Application ID [HEX:32bit]",
 		  "To separate the network logically, All devices must have the same value."
@@ -31,7 +32,7 @@ const TWESTG_tsElement TWESTG_DEFSETS_BASE[] = {
 		{ {.u32 = 0}, {.u32 = 0}, TWESTGS_VLD_u32AppId, NULL },
 	},
 	{ E_TWESTG_DEFSETS_LOGICALID,
-		{ TWESTG_DATATYPE_UINT8,  sizeof(uint8),  0, 0, {.u8 = 1 }},
+		{ TWESTG_DATATYPE_UINT8,  sizeof(uint8),  0, 0, {.u8 = CONFIG_DEFAULT_LOGICALID }},
 		{ "LID",
 		  "Device ID [1-100,etc]",
 		  "Set if more than one child unit needs to be identified." },
@@ -39,7 +40,7 @@ const TWESTG_tsElement TWESTG_DEFSETS_BASE[] = {
 		{ {.u8 = 0}, {.u8 = 255}, TWESTGS_VLD_u32MinMax, NULL },
 	},
 	{ E_TWESTG_DEFSETS_CHANNEL,
-		{ TWESTG_DATATYPE_UINT8,  sizeof(uint8),  0, 0, {.u8 = 18 }},
+		{ TWESTG_DATATYPE_UINT8,  sizeof(uint8),  0, 0, {.u8 = CONFIG_DEFAULT_CHANNEL }},
 		{ "CHN",
 		  "Channel [11-26]",
 		  "To separate the network physically, All devices must have the same value."
@@ -48,7 +49,7 @@ const TWESTG_tsElement TWESTG_DEFSETS_BASE[] = {
 		{ {.u8 = 11}, {.u8 = 26}, TWESTGS_VLD_u32MinMax, NULL },
 	},
 	{ E_TWESTG_DEFSETS_CHANNELS_3,
-		{ TWESTG_DATATYPE_UINT16, sizeof(uint16), 0, 0, {.u16 = ((1UL << 18) >> 11) }},
+		{ TWESTG_DATATYPE_UINT16, sizeof(uint16), 0, 0, {.u16 = CONFIG_DEFAULT_CHANNELS_3 }},
 		{ "CHL", "Channel(s)",
 		  "To separate the network physically, All devices must have the same value.\\n"
 		  "When up to 3 channels are specified, Channel agility function will be enabled."
@@ -57,9 +58,9 @@ const TWESTG_tsElement TWESTG_DEFSETS_BASE[] = {
 		{ {.u16 = 0}, {.u16 = 0xFFFF}, TWESTGS_VLD_u32ChList, NULL },
 	},
 	{ E_TWESTG_DEFSETS_POWER_N_RETRY,
-		// デフォルト値: 0x03 (再送: デフォルト2回, 出力: レベル3=最大)
+		// デフォルト値: CONFIG_DEFAULT_POWER_N_RETRY (再送: 9回=最大, 出力: レベル3=最大)
 		// XY形式: X=再送回数(0=デフォルト2回, 1-9=回数, F=無効), Y=出力レベル(3=最大, 2, 1, 0=最小)
-		{ TWESTG_DATATYPE_UINT8,  sizeof(uint8),  0, 0, {.u8 = 0x03 }},
+		{ TWESTG_DATATYPE_UINT8,  sizeof(uint8),  0, 0, {.u8 = CONFIG_DEFAULT_POWER_N_RETRY }},
 		{ "PWR", "RF Power/Retransmissions [HEX:8bit]",
 		  "Enter two XY digits."
 		  "\\nX: Number of retransmissions [0: default 2 times / 1-9: times, F: disabled]"
@@ -70,9 +71,9 @@ const TWESTG_tsElement TWESTG_DEFSETS_BASE[] = {
 		{ {.u8 = 0}, {.u8 = 0xFF}, TWESTGS_VLD_u32MinMax, NULL },
 	},
 	{ E_TWESTG_DEFSETS_UARTBAUD,
-		// デフォルト値: 1152 (115200 bps)
+		// デフォルト値: CONFIG_DEFAULT_UARTBAUD (115200 bps)
 		// 値は100で割った値で格納される (1152 = 115200 / 100)
-		{ TWESTG_DATATYPE_UINT16, sizeof(uint16), 0, 0, {.u16 = 1152 }},
+		{ TWESTG_DATATYPE_UINT16, sizeof(uint16), 0, 0, {.u16 = CONFIG_DEFAULT_UARTBAUD }},
 		{ "UOP", "UART Baud Alt. [XXXXX]",
 		  "Baudrate when the BPS pin or the option bit was set."
 		  "\\n- XXXXX is the baud rate [9600,19200,38400,57600,115200,230400: bps]. "
@@ -82,7 +83,7 @@ const TWESTG_tsElement TWESTG_DEFSETS_BASE[] = {
 		{ {.u16 = 0}, {.u16 = 0}, TWESTGS_VLD_u32UartBaudOpt, NULL },
 	},
 	{ E_TWESTG_DEFSETS_OPTBITS,
-		{ TWESTG_DATATYPE_UINT32, sizeof(uint32), 0, 0, {.u32 = 0x00000000 }},
+		{ TWESTG_DATATYPE_UINT32, sizeof(uint32), 0, 0, {.u32 = CONFIG_DEFAULT_OPTBITS }}, // デフォルト: config_private.h から取得
 		{ "OPT", "Option Bits [HEX:32bit]", "You can activate the settings associated with each bit." },
 		{ E_TWEINPUTSTRING_DATATYPE_HEX, 8, 'o' },
 		{ {.u32 = 0}, {.u32 = 0xFFFFFFFF}, TWESTGS_VLD_u32MinMax, NULL },

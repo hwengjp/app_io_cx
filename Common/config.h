@@ -54,18 +54,11 @@ extern "C" {
 /* Specify the PAN ID and CHANNEL to be used by tags, readers and gateway */
 #define APP_ID              0x67720107 //!< アプリケーションID。同じIDでないと通信しない。
 
-//#define CHANNEL             17
-//#define CHMASK              ((1UL << 11) | (1UL << 17) | (1UL << 25))
+// チャネル設定は config_private.h から取得
+#include "config_private.h"
 
-#define CHANNEL 16 //!< 使用するチャネル
-#define CHMASK (1UL << CHANNEL) //!< チャネルマスク（３つまで指定する事が出来る）
-
-#define CHANNEL_1 12
-#define CHMASK_1 (1UL << CHANNEL_1) //!< チャネルマスク（３つまで指定する事が出来る）
-#define CHANNEL_2 21
-#define CHMASK_2 (1UL << CHANNEL_2) //!< チャネルマスク（３つまで指定する事が出来る）
-#define CHANNEL_3 25
-#define CHMASK_3 (1UL << CHANNEL_3) //!< チャネルマスク（３つまで指定する事が出来る）
+// 後方互換性のための定義（config_private.h から取得）
+#define CHANNEL CHANNEL_DEFAULT  //!< 使用するチャネル（config_private.h の CHANNEL_DEFAULT を使用）
 
 // Coordinator specific settings
 #define PARENT_ADDR     	0x8001
