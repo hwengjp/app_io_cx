@@ -16,7 +16,7 @@
 # multi language support 
 TWE_LANG_MULTI_SUPPORTED ?= EN JP
 # preferred lang
-TWE_LANG_PREF ?= JP
+TWE_LANG_PREF ?= EN
 
 #####################################################################
 ### set application version (MUST SET THIS.)
@@ -34,7 +34,6 @@ APPSRC += common.c
 #APPSRC += input_string.c
 APPSRC += duplicate_checker.c
 APPSRC += Pairing.c
-APPSRC += twesettings_std_defsets.c
 #APPSRC += nfc_configuration.c
 
 
@@ -76,4 +75,3 @@ MWSDK_PATH=$(realpath $(MWSDK_ROOT))
 ### must include mwx.mk (the makefile body part.)
 include $(MWSDK_PATH)/MkFiles/mw.mk
 #####################################################################
-

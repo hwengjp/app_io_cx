@@ -65,7 +65,7 @@ const TWESTG_tsElement TWESTG_DEFSETS_BASE[] = {
 		  "Enter two XY digits."
 		  "\\nX: Number of retransmissions [0: default 2 times / 1-9: times, F: disabled]"
 		  "\\nY: Transmission power level [3: strongest / 2 / 1 / 0: weakest]"
-		  "For example, 43 results in 4 retransmissions and the strongest ouput power."
+		  "For example, 42 results in 4 retransmissions and level 2 output power."
 		},
 		{ E_TWEINPUTSTRING_DATATYPE_HEX, 2, 'x' },
 		{ {.u8 = 0}, {.u8 = 0xFF}, TWESTGS_VLD_u32MinMax, NULL },

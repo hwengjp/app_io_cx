@@ -14,8 +14,9 @@ typedef enum
 {
 	E_EVENT_APP_BASE = ToCoNet_EVENT_APP_BASE,//!< ToCoNet 組み込みイベントと重複させないため
     E_EVENT_APP_TICK_A,                    //!< 64FPS のタイマーイベント
+    E_EVENT_APP_ADC_COMPLETE,              //!< ADC完了
     E_EVENT_APP_TX_COMPLETE,                //!< TX完了
-    E_EVENT_APP_RX_COMPLETE                //!< RX完了
+    E_EVENT_APP_RX_COMPLETE                //!< TX完了
 } teEventApp;
 
 /** @ingroup MASTER
@@ -24,7 +25,7 @@ typedef enum
 typedef enum
 {
 	E_STATE_APP_BASE = ToCoNet_STATE_APP_BASE,//!< ToCoNet 組み込み状態と重複させないため
-	E_STATE_APP_WAIT_IO_FIRST_CAPTURE,        //!< 最初のDIの状態確定を待つ
+	E_STATE_APP_WAIT_IO_FIRST_CAPTURE,        //!< 最初のADCやDIの状態確定を待つ
 	E_STATE_APP_TX,
 	E_STATE_APP_WAIT_TX,
 	E_STATE_APP_SLEEPING,                     //!< スリープ処理

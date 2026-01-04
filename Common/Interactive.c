@@ -59,11 +59,18 @@ static TWE_APIRET TWESTGS_VLD_u32FPS(struct _TWESTG_sElement* pMe, TWESTG_tsDatu
  *   APPIDのデフォルト値を書き換えている
  */
 static const uint8 au8CustomDefault_Base[] = {
-	19,   // 総バイト数
-	E_TWESTG_DEFSETS_APPID, (TWESTG_DATATYPE_UINT32 << 4) | 4, (APP_ID>>24)&0xFF,(APP_ID>>16)&0xFF,(APP_ID>>8)&0xFF,APP_ID&0xFF, // 6bytes
-	E_TWESTG_DEFSETS_CHANNELS_3 , (TWESTG_DATATYPE_UINT16 << 4) | 2, 0x00, 0x20, // 4bytes
-	E_TWESTG_DEFSETS_LOGICALID, (TWESTG_DATATYPE_UINT8<<4)| 1, 0,	// 3bytes
-	E_TWESTG_DEFSETS_OPTBITS, (TWESTG_DATATYPE_UINT32<<4) | 4, 0, 0, 0, 0,	// 6bytes
+	22,   // 総バイト数（TWESTG_DEFSETS_BASEの順序に合わせて並び替え、POWER_N_RETRYを追加）
+	E_TWESTG_DEFSETS_APPID, (TWESTG_DATATYPE_UINT32 << 4) | 4, 
+	((CONFIG_DEFAULT_APPID>>24)&0xFF), ((CONFIG_DEFAULT_APPID>>16)&0xFF), 
+	((CONFIG_DEFAULT_APPID>>8)&0xFF), (CONFIG_DEFAULT_APPID&0xFF), // 6bytes (config_private.hから取得、ビッグエンディアン)
+	E_TWESTG_DEFSETS_LOGICALID, (TWESTG_DATATYPE_UINT8<<4)| 1, CONFIG_DEFAULT_LOGICALID,	// 3bytes (config_private.hから取得)
+	E_TWESTG_DEFSETS_CHANNELS_3 , (TWESTG_DATATYPE_UINT16 << 4) | 2, 
+	((CONFIG_DEFAULT_CHANNELS_3>>8)&0xFF), (CONFIG_DEFAULT_CHANNELS_3&0xFF), // 4bytes (config_private.hから取得、ビッグエンディアン)
+	E_TWESTG_DEFSETS_POWER_N_RETRY, (TWESTG_DATATYPE_UINT8 << 4) | 1, 
+	CONFIG_DEFAULT_POWER_N_RETRY, // 3bytes (config_private.hから取得)
+	E_TWESTG_DEFSETS_OPTBITS, (TWESTG_DATATYPE_UINT32<<4) | 4, 
+	((CONFIG_DEFAULT_OPTBITS>>24)&0xFF), ((CONFIG_DEFAULT_OPTBITS>>16)&0xFF), 
+	((CONFIG_DEFAULT_OPTBITS>>8)&0xFF), (CONFIG_DEFAULT_OPTBITS&0xFF), // 6bytes (config_private.hから取得、ビッグエンディアン)
 };
 
 /**
@@ -91,7 +98,7 @@ static const TWESTG_tsElement SetSettings[] = {
 		{ {.u16 = 0}, {.u16 = 0xFFFF}, TWESTGS_VLD_u32MinMax, NULL }
 	},
 	{ E_TWESTG_DEFSETS_FPS,
-		{ TWESTG_DATATYPE_UINT8, sizeof(uint8), 0 , 0, { .u8 = 32 } },
+		{ TWESTG_DATATYPE_UINT8, sizeof(uint8), 0 , 0, { .u8 = CONFIG_DEFAULT_FPS } },
 		{	"FPS",
 			"0.03 sec continuous Mode(3) [4,8,16,32 Hz]",
 			"Enter the transmission frequency per second for Mode3. [4,8,16,32: Freq]"
@@ -123,7 +130,7 @@ static const TWESTG_tsElement SetSettings[] = {
 		{ {.u16 = 20}, {.u16 = 64000}, TWESTGS_VLD_u32MinMax, NULL }
 	},
 	{ E_TWESTG_DEFSETS_ENCENABLE,
-		{ TWESTG_DATATYPE_UINT8, sizeof(uint8), 0 , 0, { .u8 = 0 } },
+		{ TWESTG_DATATYPE_UINT8, sizeof(uint8), 0 , 0, { .u8 = CONFIG_DEFAULT_ENCENABLE } },
 		{ "ENB",
 			"Encryption [0,1]",
 			"Switch 128-bit AES encryption. [0: Disabled / 1: Enabled]"
@@ -132,7 +139,7 @@ static const TWESTG_tsElement SetSettings[] = {
 		{ {.u8 = 0}, {.u8 = 1}, TWESTGS_VLD_u32MinMax, NULL }
 	},
 	{ E_TWESTG_DEFSETS_ENCKEY,
-		{ TWESTG_DATATYPE_STRING, 15, 0 , 0, { .pu8 = (uint8*)"\0       " } },
+		{ TWESTG_DATATYPE_STRING, 15, 0 , 0, { .pu8 = (uint8*)CONFIG_DEFAULT_ENCKEY } },
 		{ "ECK",
 			"Encryption key [15chrs]",
 			"Enter the encryption key as 15 characters of text (not binary)."

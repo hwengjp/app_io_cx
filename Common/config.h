@@ -26,10 +26,9 @@ extern "C" {
 # define IS_CONF_NORMAL() (1)
 # define FW_CONF_ID() (1)
 
-# define USE_LANG_INTERACTIVE_DEFAULT 2 // 0,1:English 2:Japanese
-# ifndef USE_LANG_INTERACTIVE
-#  define USE_LANG_INTERACTIVE USE_LANG_INTERACTIVE_DEFAULT
-# endif
+# define USE_LANG_INTERACTIVE_DEFAULT 0 // 0,1:English 2:Japanese
+# undef USE_LANG_INTERACTIVE  // 既存の定義を削除
+# define USE_LANG_INTERACTIVE 0  // 英語に強制設定
 # define FW_CONF_LANG() USE_LANG_INTERACTIVE
 
 #define MW_NVMEM_FIRST_SECTOR 0
@@ -59,6 +58,7 @@ extern "C" {
 
 // 後方互換性のための定義（config_private.h から取得）
 #define CHANNEL CHANNEL_DEFAULT  //!< 使用するチャネル（config_private.h の CHANNEL_DEFAULT を使用）
+// CHMASKはconfig_private.hで定義されているため、ここでは定義しない
 
 // Coordinator specific settings
 #define PARENT_ADDR     	0x8001

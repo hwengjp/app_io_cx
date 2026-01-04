@@ -150,6 +150,7 @@ extern const uint32 MWPFX(au32ChMask_Preset)[];
 
 // Packet CMD IDs
 #define TOCONET_PACKET_CMD_APP_USER_IO_DATA (TOCONET_PACKET_CMD_APP_USER+0) //!< IO の入出力データ
+#define TOCONET_PACKET_CMD_APP_USER_IO_DATA_EXT (TOCONET_PACKET_CMD_APP_USER+1) //!< IO の入出力データ
 #define TOCONET_PACKET_CMD_APP_USER_SERIAL_MSG (TOCONET_PACKET_CMD_APP_USER+2) //!< IO の入出力データ
 
 /* Modbus ASCII output functions */

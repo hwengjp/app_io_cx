@@ -1,4 +1,6 @@
-/* Licensed under the Apache License, Version 2.0 - see [LICENSE](https://www.apache.org/licenses/LICENSE-2.0) file for details. */
+/* Copyright (C) 2017 Mono Wireless Inc. All Rights Reserved.    *
+ * Released under MW-SLA-*J,*E (MONO WIRELESS SOFTWARE LICENSE *
+ * AGREEMENT).                                                    */
 
 /** @file
  * アプリケーションのメイン処理
@@ -19,6 +21,9 @@
 #include <jendefs.h>
 #include <AppHardwareApi.h>
 
+#ifdef MWLIB_MULTINONE
+#include "../../TWELITE_Apps/MultInOne.h"
+#endif
 
 #include "app_prefix.h"
 
@@ -71,6 +76,14 @@ typedef struct {
 
 	int16 i16TxCbId; //!< 送信時のID
 } tsIOData;
+
+/** @ingroup MASTER
+ * IO 設定要求
+ */
+typedef struct {
+	uint16 u16IOports;          //!< 出力IOの状態 (1=Lo, 0=Hi)
+	uint16 u16IOports_use_mask; //!< 設定を行うポートなら TRU
+} tsIOSetReq;
 
 /** @ingroup MASTER
  * アプリケーションの情報
@@ -144,7 +157,11 @@ typedef struct {
 	uint8 u8StandardTxAckRetry; //!< デフォルトの再送設定(ACKモード時)
 } tsAppData;
 
+#ifndef MWLIB_MULTINONE
 extern tsAppData sAppData; //!< アプリケーションデータ  @ingroup MASTER
+#else
+#define sAppData (*(tsAppData *)_MULTINONE_PS_APP_DATA) //!< アプリケーションデータ  @ingroup MASTER
+#endif
 
 /** @ingroup MASTER
  * アプリケーション制御データ (static 定義していたものを移動)
@@ -221,7 +238,11 @@ typedef struct _sAppDataExt {
 	} In_Interactive_C;
 } tsAppDataExt;
 
+#ifndef MWLIB_MULTINONE
 extern tsAppDataExt sAppDataExt; //!< アプリケーションデータ  @ingroup MASTER
+#else
+#define sAppDataExt (*(tsAppDataExt *)_MULTINONE_PS_APP_DATAEXT) //!< アプリケーションデータ  @ingroup MASTER
+#endif
 
 #define DATAEXT(X) (sAppDataExt.X)
 #define gc_sSer (sAppDataExt.sSerStream)

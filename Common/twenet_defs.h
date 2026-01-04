@@ -2,7 +2,11 @@
 #define COMMON_TWENET_DEFS_H_
 
 // Select Modules (define befor include "ToCoNet.h")
+#ifdef MWLIB_MULTINONE
+#define ToCoNet_USE_MOD_TXRXQUEUE_MULTINONE
+#else
 #define ToCoNet_USE_MOD_TXRXQUEUE_BIG
+#endif
 #define ToCoNet_USE_MOD_CHANNEL_MGR
 
 #define ToCoNet_USE_MOD_CHANNEL_MGR
